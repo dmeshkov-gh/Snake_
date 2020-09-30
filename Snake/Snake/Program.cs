@@ -11,6 +11,9 @@ namespace Snake
     {
         static void Main(string[] args)
         {
+            //Сделать курсор невидимым
+            Console.CursorVisible = false;
+            //Задаем размер поля
             Console.SetBufferSize(120, 50);
             //Отрисовка рамки
             HorizontalLine upLine = new HorizontalLine(0, 78, 0, '+');
@@ -21,23 +24,32 @@ namespace Snake
             DownLine.Draw();
             leftLine.Draw();
             rightLine.Draw();
-
             //Отрисовка змейки
             Point p = new Point(4, 5, '*');
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
-
-            //Сделать курсор невидимым
-            Console.CursorVisible = false;
+            //Создаем еду
+            FoodCreator foodCreator = new FoodCreator(80, 25, '$');
+            Point food = foodCreator.CreateFood();
+            food.Draw();
 
             while (true)
             {
+                if (snake.Eat(food))
+                {
+                    food = foodCreator.CreateFood();
+                    food.Draw();
+                }
+                else
+                {
+                    snake.Move();
+                }
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
                     snake.HandleKey(key.Key);
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(300);
                 snake.Move();
             }
 

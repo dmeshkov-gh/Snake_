@@ -61,5 +61,10 @@ namespace Snake
         {
             return x + ", " + y + ", " + sym;
         }
+
+        internal bool IsHit(Point p)
+        {
+            return p.x == this.x && p.y == this.y;
+        }
     }
 }
